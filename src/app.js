@@ -1,28 +1,29 @@
-const Hapi = require('hapi');
-const Joi = require('joi');
-const find = require('lodash.find');
+const Hapi = require("hapi");
+const Joi = require("joi");
+const find = require("lodash.find");
+import "dotenv/config";
 
+console.log(process.env.MY_SECRET);
 const messages = [];
 
 const server = Hapi.server({
     port: 3000,
-    host: 'localhost'
+    host: "localhost"
 });
 
 server.route({
-    method: 'GET',
-    path: '/',
+    method: "GET",
+    path: "/",
     handler: (request, h) => {
-
-        return 'Hello, world!';
+        return "Hello, world!";
     }
 });
 
 server.route({
-    method: 'GET',
-    path: '/messages',
+    method: "GET",
+    path: "/messages",
     handler: (request, h) => {
-        request.logger.info('In GET %s', request.path);
+        request.logger.info("In GET %s", request.path);
         return {
             totalCount: messages.length,
             count: messages.length,
@@ -34,8 +35,8 @@ server.route({
 });
 
 server.route({
-    method: 'GET',
-    path: '/message/{id}',
+    method: "GET",
+    path: "/message/{id}",
     config: {
         validate: {
             params: {
@@ -44,38 +45,39 @@ server.route({
         }
     },
     handler: (request, h) => {
-        request.logger.info('In GET By Id %s', request.path);
-        const message = find(messages,['id', request.params.id]);
+        request.logger.info("In GET By Id %s", request.path);
+        const message = find(messages, ["id", request.params.id]);
         return message ? message : {};
     }
 });
 
 server.route({
-    method: 'POST',
-    path: '/message',
+    method: "POST",
+    path: "/message",
     config: {
         validate: {
             payload: {
                 id: Joi.string().required(),
                 message: Joi.string().required(),
-                createDate: Joi.date().forbidden().default(new Date())
+                createDate: Joi.date()
+                    .forbidden()
+                    .default(new Date())
             }
         }
     },
     handler: (request, h) => {
-        request.logger.info('In Post %s', request.path);
+        request.logger.info("In Post %s", request.path);
         messages.push(request.payload);
         return request.payload;
     }
 });
 
 const init = async () => {
-
     await server.register({
-        plugin: require('hapi-pino'),
+        plugin: require("hapi-pino"),
         options: {
             prettyPrint: true,
-            logEvents: ['response', 'onPostStart']
+            logEvents: ["response", "onPostStart"]
         }
     });
 
@@ -83,8 +85,7 @@ const init = async () => {
     console.log(`Server running at: ${server.info.uri}`);
 };
 
-process.on('unhandledRejection', (err) => {
-
+process.on("unhandledRejection", err => {
     console.log(err);
     process.exit(1);
 });
