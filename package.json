@@ -1,0 +1,24 @@
+{
+  "name": "node-hapi-rest",
+  "version": "1.0.0",
+  "description": "This is a simple exploratory hapi js REST Service.",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Trabis Hutto",
+  "license": "ISC",
+  "dependencies": {
+    "hapi": "^18.1.0",
+    "hapi-pino": "^5.4.1",
+    "joi": "^14.3.1",
+    "lodash.find": "^4.6.0"
+  },
+  "nodemonConfig": {
+    "delay": "2500"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.10"
+  }
+}
