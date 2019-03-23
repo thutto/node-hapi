@@ -12,7 +12,6 @@ module.exports = (function() {
                 return "Hello, world!";
             }
         },
-
         {
             method: "GET",
             path: "/messages",
@@ -28,7 +27,6 @@ module.exports = (function() {
                 };
             }
         },
-
         {
             method: "GET",
             path: "/message/{id}",
@@ -48,7 +46,6 @@ module.exports = (function() {
                 return message ? message : {};
             }
         },
-
         {
             method: "POST",
             path: "/message",
