@@ -14,7 +14,7 @@
           "npm run pretty",
           "git add"
       ]
-  }
+  },
   "author": "Trabis Hutto",
   "license": "ISC",
   "dependencies": {
