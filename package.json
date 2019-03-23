@@ -22,6 +22,7 @@
     "hapi": "^18.1.0",
     "hapi-pino": "^5.4.1",
     "joi": "^14.3.1",
+    "lodash.assignin": "^4.2.0",
     "lodash.find": "^4.6.0"
   },
   "nodemonConfig": {

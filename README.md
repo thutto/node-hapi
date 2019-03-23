@@ -16,5 +16,4 @@ npm start;
 
 ## TODO
 * Code: Add DB Connection
-* Code: Structure code
 * Code: Add Test
