@@ -1,35 +1,47 @@
 const Hapi = require("hapi");
 const Joi = require("joi");
 const find = require("lodash.find");
-const messages = [];
+// const NoteModel = require("../models/note.model");
+
+const Mongoose = require("mongoose");
+
+const NoteModel = Mongoose.model("note", {
+    id: String,
+    note: String,
+    createDate: Date,
+    archived: Boolean
+});
 
 module.exports = (function() {
     return [
         {
             method: "GET",
             path: "/",
-            handler: (request, h) => {
+            handler: async (request, h) => {
                 return "Hello, world!";
             }
         },
         {
             method: "GET",
-            path: "/messages",
-            handler: (request, h) => {
+            path: "/notes",
+            handler: async (request, h) => {
                 request.logger.info("In GET %s", request.path);
-                console.log(constants);
+                const notesList = await NoteModel.find().exec();
+                if (!notesList) {
+                    notesList = [];
+                }
                 return {
-                    totalCount: messages.length,
-                    count: messages.length,
-                    limit: messages.length,
+                    totalCount: notesList.length,
+                    count: notesList.length,
+                    limit: notesList.length,
                     offset: 0,
-                    messages: messages
+                    notes: notesList
                 };
             }
         },
         {
             method: "GET",
-            path: "/message/{id}",
+            path: "/note/{id}",
             config: {
                 validate: {
                     params: {
@@ -37,33 +49,37 @@ module.exports = (function() {
                     }
                 }
             },
-            handler: (request, h) => {
+            handler: async (request, h) => {
                 request.logger.info("In GET By Id %s", request.path);
-                const message = find(constants.messages, [
-                    "id",
-                    request.params.id
-                ]);
-                return message ? message : {};
+                console.log(request.params.id);
+                const note = NoteModel.findById(request.params.id).exec();
+                return note ? note : {};
             }
         },
         {
             method: "POST",
-            path: "/message",
+            path: "/note",
             config: {
                 validate: {
                     payload: {
                         id: Joi.string().required(),
-                        message: Joi.string().required(),
+                        note: Joi.string().required(),
                         createDate: Joi.date()
                             .forbidden()
-                            .default(new Date())
+                            .default(new Date()),
+                        archived: Joi.boolean().default(false)
                     }
                 }
             },
-            handler: (request, h) => {
+            handler: async (request, h) => {
                 request.logger.info("In Post %s", request.path);
-                messages.push(request.payload);
-                return request.payload;
+                try {
+                    const note = new NoteModel(request.payload);
+                    const result = await note.save();
+                    return result;
+                } catch (error) {
+                    return error;
+                }
             }
         }
     ];
