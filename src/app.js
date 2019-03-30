@@ -1,12 +1,9 @@
-const Hapi = require("hapi");
-const routes = require("./routes");
-const Mongoose = require("mongoose");
-
-//TODO:: Remove once testing complete
 import "dotenv/config";
-console.log(process.env.MY_SECRET);
+import Hapi from "hapi";
+import Mongoose from "mongoose";
+import routes from "./routes";
 
-Mongoose.connect("mongodb://localhost:5555/test");
+Mongoose.connect(process.env.MONGO_CONNECTION_STR);
 
 var db = Mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
@@ -16,12 +13,11 @@ db.once("open", function() {
 });
 
 const server = Hapi.server({
-    port: 3000,
-    host: "localhost"
+    port: process.env.HAPI_PORT,
+    host: process.env.HAPI_HOST
 });
 
 for (const route in routes) {
-    console.log(route);
     server.route(routes[route]);
 }
 

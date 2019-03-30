@@ -1,6 +1,6 @@
-const Mongoose = require("mongoose");
+import Mongoose from "mongoose";
 
-const NoteModel = Mongoose.model("note", {
+exports.NoteModel = Mongoose.model("note", {
     id: String,
     note: String,
     createDate: Date,

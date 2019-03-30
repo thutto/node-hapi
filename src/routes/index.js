@@ -1,6 +1,6 @@
-const path = require("path");
-const fs = require("fs");
-const assign = require("lodash.assignin");
+import path from "path";
+import fs from "fs";
+import assign from "lodash.assignin";
 
 fs.readdirSync(__dirname).forEach(file => {
     /* If its the current file ignore it */
