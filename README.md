@@ -15,5 +15,7 @@ npm start;
 ```
 
 ## TODO
-* Code: Add Test
-* Clean Up Model, and Handlers
+* Add Delete
+* Add Update
+* Add Search support
+* Add pagination
